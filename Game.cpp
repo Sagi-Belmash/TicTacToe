@@ -23,7 +23,6 @@ bool Game::makeMove(const int row, const int col) {
         board[row][col] = getCurrentPlayer();
         return true;
     }
-    std::cout << "Place is invalid or occupied, please choose another\n";
     return false;
 }
 
