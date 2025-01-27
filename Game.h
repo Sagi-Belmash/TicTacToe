@@ -5,21 +5,26 @@
 #ifndef TICTACTOE_GAME_H
 #define TICTACTOE_GAME_H
 #include <vector>
+#include "Player.h"
 
 
 class Game {
 private:
     std::vector<std::vector<char>> board;
-    char currentPlayer;
+    Player* currentPlayer;
+    std::vector<Player*> playerVec;
 
 public:
     Game();
     void displayBoard();
+    bool initPlayers();
+    void resetGame();
     bool makeMove(const int row, const int col);
     bool checkWin();
     bool isDraw();
     void switchPlayer();
-    char getCurrentPlayer();
+    Player* getCurrentPlayer();
+    void freeGame();
 };
 
 

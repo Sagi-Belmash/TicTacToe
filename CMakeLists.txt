@@ -7,4 +7,7 @@ add_executable(TicTacToe main.cpp
         Game.cpp
         Game.h
         main.cpp
+        main.h
+        Player.cpp
+        Player.h
 )

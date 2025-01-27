@@ -150,4 +150,6 @@ CMakeFiles\TicTacToe.dir\main.cpp.obj.ddi: \
  C:/msys64/mingw64/include/c++/14.2.0/bits/stl_uninitialized.h \
  C:/msys64/mingw64/include/c++/14.2.0/bits/stl_vector.h \
  C:/msys64/mingw64/include/c++/14.2.0/bits/stl_bvector.h \
- C:/msys64/mingw64/include/c++/14.2.0/bits/vector.tcc
+ C:/msys64/mingw64/include/c++/14.2.0/bits/vector.tcc \
+ C:/Users/sagib/CLionProjects/TicTacToe/Player.h \
+ C:/Users/sagib/CLionProjects/TicTacToe/main.h

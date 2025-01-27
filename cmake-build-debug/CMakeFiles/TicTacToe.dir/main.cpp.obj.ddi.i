@@ -46411,48 +46411,89 @@ namespace std
 
 }
 # 8 "C:/Users/sagib/CLionProjects/TicTacToe/Game.h" 2
+# 1 "C:/Users/sagib/CLionProjects/TicTacToe/Player.h" 1
+# 10 "C:/Users/sagib/CLionProjects/TicTacToe/Player.h"
+
+# 10 "C:/Users/sagib/CLionProjects/TicTacToe/Player.h"
+class Player {
+private:
+    std::string name;
+    int score;
+    int sign;
+    int playerNum;
+public:
+    Player();
+    int getScore();
+    void incrementScore();
+    void setPlayerNum(const int num);
+    int getPlayerNum();
+    void getNameFromUser();
+    std::string getName();
+    char getSign();
+};
+# 9 "C:/Users/sagib/CLionProjects/TicTacToe/Game.h" 2
 
 
-
-# 10 "C:/Users/sagib/CLionProjects/TicTacToe/Game.h"
 class Game {
 private:
     std::vector<std::vector<char>> board;
-    char currentPlayer;
+    Player* currentPlayer;
+    std::vector<Player*> playerVec;
 
 public:
     Game();
     void displayBoard();
+    bool initPlayers();
+    void resetGame();
     bool makeMove(const int row, const int col);
     bool checkWin();
     bool isDraw();
     void switchPlayer();
-    char getCurrentPlayer();
+    Player* getCurrentPlayer();
+    void freeGame();
 };
 # 6 "C:/Users/sagib/CLionProjects/TicTacToe/main.cpp" 2
+# 1 "C:/Users/sagib/CLionProjects/TicTacToe/main.h" 1
+# 7 "C:/Users/sagib/CLionProjects/TicTacToe/main.cpp" 2
+
+
 
 int main() {
     Game game;
-    game.displayBoard();
-
-    while (true) {
-        std::cout << game.getCurrentPlayer() << "! It's your turn!\n";
-        int row;
-        int col;
-        do {
-            std::cout << "Enter row (0-2) and col (0-2):\n";
-            std::cin >> row >> col;
-        } while (!game.makeMove(row, col));
+    bool gameOn = true;
+    char playAgain;
+    while (gameOn) {
+        std::cout << "==============================\n=====     GAME START     =====\n==============================\n";
+        game.resetGame();
         game.displayBoard();
-        if (game.checkWin()) {
-            std::cout << "The winner is " << game.getCurrentPlayer() << "!\n";
-            break;
+        while (true) {
+            std::cout << game.getCurrentPlayer()->getName() << "! It's your turn!\n";
+            int row;
+            int col;
+            while (true) {
+                std::cout << "Enter row (0-2) and col (0-2):\n";
+                std::cin >> row >> col;
+                if (game.makeMove(row, col)) break;
+                std::cout << "Place is invalid or occupied, please choose another\n";
+            }
+            game.displayBoard();
+            if (game.checkWin()) {
+                std::cout << "The winner is " << game.getCurrentPlayer()->getName() << "!\n";
+                game.getCurrentPlayer()->incrementScore();
+                break;
+            }
+            if (game.isDraw()) {
+                std::cout << "It's a draw!\n";
+                break;
+            }
+            game.switchPlayer();
         }
-        if (game.isDraw()) {
-            std::cout << "It's a draw!\n";
-            break;
-        }
-        game.switchPlayer();
+        std::cout << "Play again? (y/Y if yes, any other key to no)\n";
+        std::cin >> playAgain;
+        if (tolower(playAgain) != 'y')
+            gameOn = false;
     }
+    std::cout << "Bye bye!";
+    game.freeGame();
     return 0;
 }
