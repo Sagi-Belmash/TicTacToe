@@ -1,89 +1,67 @@
-//
-// Created by sagib on 21/01/2025.
-//
-#include <iostream>
 #include "Game.h"
-#define ROW_SEP "-------------\n"
 
-Game::Game() : board(3, std::vector<char>(3, ' ')) {
-    playerVec.reserve(2 * sizeof(Player*));
-    initPlayers();
-    std::srand(time(0));
+
+Game::Game() {
+    std::cout << "Game created" << std::endl;
 }
 
-void Game::displayBoard() {
-    for (const auto& row : board) {
-        std::cout << ROW_SEP;
-        for (const auto& cell : row) {
-            std::cout << "| " << cell << " ";
-        }
-        std::cout << "|\n";
-    }
-    std::cout << ROW_SEP;
+Game::~Game() {
+    std::cout << "Game destroyed" << std::endl;
 }
 
-bool Game::initPlayers() {
-    try {
-        Player* p1 = new Player();
-        Player* p2 = new Player();
-        playerVec.push_back(p1);
-        playerVec.push_back(p2);
-    } catch (const std::bad_alloc& e) {
-        std::cerr << "Memory allocation failed: " << e.what() << '\n';
-        return false;
-    }
-    return true;
+Game& Game::getInstance() {
+    static Game instance;
+    return instance;
 }
 
+// Resetes the symbol vectors
 void Game::resetGame() {
-    playerVec[0]->setPlayerNum(std::rand() % 2);
-    playerVec[1]->setPlayerNum(1 - playerVec[0]->getPlayerNum());
-    currentPlayer = playerVec[0]->getPlayerNum() == 0 ? playerVec[0] : playerVec[1];
-    for (int i = 0; i < 3; i++)
-        for (int j = 0; j < 3; j++)
-            board[i][j] = ' ';
-    std::cout << "Current scores:\n" << playerVec[0]->getName() << ": " << playerVec[0]->getScore() << " | " << playerVec[1]->getName() << ": " << playerVec[1]->getScore() << "\n";
+    xVec.clear();
+    oVec.clear();
+    currPlayer = 'X';
 }
 
-bool Game::makeMove(const int row, const int col) {
-    if (row >= 0 && row <= 2 && col >= 0 && col <= 2 && board[row][col] == ' ') {
-        board[row][col] = getCurrentPlayer()->getSign();
+// If possible, places the current symbol on the dessired row and column
+bool Game::makeMove(int row, int col) {
+    if (row >= 0 && row <= 2
+        && col >= 0 && col <= 2
+        && !std::count(xVec.begin(), xVec.end(), row * 3 + col)
+        && !std::count(oVec.begin(), oVec.end(), row * 3 + col)) {
+        std::vector<int>& currVec = currPlayer == 'X' ? xVec : oVec;
+        currVec.push_back(row * 3 + col);
         return true;
     }
     return false;
 }
 
-bool Game::checkWin() {
-    for (int i = 0; i < 3; i++) {
-        if ((board[i][0] != ' ' && board[i][0] == board[i][1] && board[i][0] == board[i][2]) ||
-           (board[0][i] != ' ' && board[0][i] == board[1][i] && board[0][i] == board[2][i])) return true;
+// Return true if the current player has won
+bool Game::checkWin(int* begin, int* end) {
+    std::vector<int> currVec = currPlayer == 'X' ? xVec : oVec;
+    int winArrs[][3] = {
+        { 0, 1, 2 }, { 3, 4, 5 }, { 6, 7, 8 },
+        { 0, 3, 6 }, { 1, 4, 7 }, { 2, 5, 8 },
+        { 0, 4, 8 }, { 2, 4, 6}
+    };
+
+    if (currVec.size() >= 3) {
+        for (int* winArr : winArrs) {
+            if (std::count(currVec.begin(), currVec.end(), winArr[0]) &&
+                std::count(currVec.begin(), currVec.end(), winArr[1]) &&
+                std::count(currVec.begin(), currVec.end(), winArr[2])) {
+                *begin = winArr[0];
+                *end = winArr[2];
+                return true;
+            }
+        }
     }
-    if ((board[0][0] != ' ' && board[0][0] == board[1][1] && board[0][0] == board[2][2]) ||
-       (board[2][0] != ' ' && board[2][0] == board[1][1] && board[2][0] == board[0][2])) return true;
     return false;
 }
 
-bool Game::isDraw() {
-    for (const auto& row : board) {
-        for (const auto& cell : row) {
-            if (cell == ' ') return false;
-        }
-    }
-    return true;
-}
-
 void Game::switchPlayer() {
-    currentPlayer = currentPlayer->getPlayerNum() == playerVec[0]->getPlayerNum() ? playerVec[1] : playerVec[0];
+    currPlayer = currPlayer == 'X' ? 'O' : 'X';
 }
-
-Player* Game::getCurrentPlayer() {
-    return currentPlayer;
-}
-
-void Game::freeGame() {
-    for (Player* pP : playerVec) {
-        delete(pP);
-    }
-    playerVec.clear();
+// Returns the symbol of the current player
+char Game::getCurrentPlayer() {
+    return currPlayer;
 }
 

@@ -1,7 +1,0 @@
-ninja_dyndep_version = 1.0
-build CMakeFiles/TicTacToe.dir/main.cpp.obj: dyndep
-
-build CMakeFiles/TicTacToe.dir/Game.cpp.obj: dyndep
-
-build CMakeFiles/TicTacToe.dir/Player.cpp.obj: dyndep
-
