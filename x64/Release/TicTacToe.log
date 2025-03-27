@@ -1,0 +1,13 @@
+﻿  EBO.cpp
+  Game.cpp
+  Main.cpp
+  Player.cpp
+  shaderClass.cpp
+  VAO.cpp
+  VBO.cpp
+  glad.c
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 309 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  TicTacToe.vcxproj -> C:\Users\sagib\source\repos\TicTacToe\x64\Release\TicTacToe.exe
