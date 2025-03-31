@@ -1,9 +1,2 @@
-﻿  EBO.cpp
-  Game.cpp
-  Main.cpp
-  VAO.cpp
-  VBO.cpp
-  shaderClass.cpp
-  Generating Code...
-  glad.c
+﻿  Main.cpp
   TicTacToe.vcxproj -> C:\Users\sagib\source\repos\TicTacToe\x64\Debug\TicTacToe.exe

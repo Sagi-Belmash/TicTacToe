@@ -1,8 +1,8 @@
 //
 // Created by sagib on 21/01/2025.
 //
-#include "Main.h"
 #include "Game.h"
+#include "Main.h"
 #include "shaderClass.h"
 #include <iostream>
 #define _USE_MATH_DEFINES
@@ -177,9 +177,11 @@ void refreshWindow(GLFWwindow* window, VAO gridVAO, EBO gridEBOs[3], VAO symbolV
 	}
 	
 	// Drawing the win line
-	glLineWidth(20);
-	winVAO.Bind();
-	glDrawArrays(GL_LINES, 0, 2);
+	if (glfwGetTime() - cooldownTime < COOLDOWN) {
+		glLineWidth(20);
+		winVAO.Bind();
+		glDrawArrays(GL_LINES, 0, 2);
+	}
 
 	// Updating window
 	glfwSwapBuffers(window);
